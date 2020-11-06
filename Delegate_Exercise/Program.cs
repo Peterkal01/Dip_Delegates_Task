@@ -10,19 +10,29 @@ namespace Delegate_Exercise
     {
         static void Main(string[] args)
         {
+            var fileHandler = new FileHandler();
+            var dataParser = new DataParser();
+            var csvHandler = new CsvHandler();
 
+            var dataHandler = new Func<List<List<string>>, List<List<string>>>(dataParser.StripQuotes);
+            dataHandler += dataParser.StripWhiteSpace;
+            dataHandler += RemoveHashes;
+
+            csvHandler.ProcessCsv("C:/Users/peter/Documents/GitHub/Dip_Delegates_Task/data.csv", "C:/Users/peter/Documents/GitHub/Dip_Delegates_Task/processed_data.csv", dataHandler);
         }
 
-        public static List<List<string>> RemoveHashes(List<List<string>> data) {
-            foreach(var row in data) {
-                for (var index = 0; index < row.Count; index++) {
-                    if(row[index][0] == '#')
-                        row[index] = row[index].Remove(0,1);
- 
+        public static List<List<string>> RemoveHashes(List<List<string>> data)
+        {
+            foreach (var row in data)
+            {
+                for (var index = 0; index < row.Count; index++)
+                {
+                    if (row[index][0] == '#')
+                        row[index] = row[index].Remove(0, 1);
+
                 }
             }
             return data;
-            
-        }
+        }            
     }
 }
